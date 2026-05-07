@@ -1,7 +1,7 @@
 export type UsuarioProps = {
     id: string;
     email: string;
-    senhaHash: string;
+    senha: string;
     autorizacao: string;
 }
 
@@ -9,24 +9,27 @@ export class Usuario {
 
     private constructor (readonly props:UsuarioProps){}
 
-    public static criar(props:UsuarioProps): Usuario{
+    public static criar(email: string, senha: string, autorizacao: string): Usuario{
 
-        if (!props.email || !props.email.includes('@')) {
+        if (!email || !email.includes('@')) {
             throw new Error("E-mail inválido.");
         }
 
-        if (props.autorizacao !== 'PROFESSOR' && props.autorizacao !== 'ALUNO') {
+        if (autorizacao !== 'PROFESSOR' && autorizacao !== 'ALUNO') {
             throw new Error("Autorização inválida. O nível de acesso deve ser PROFESSOR ou ALUNO.");
         }
 
-        if (!props.senhaHash || props.senhaHash.trim() === "") {
+        if (!senha || senha.trim() === "") {
             throw new Error("A senha é obrigatória.");
-        }
+        } {}
 
-        return new Usuario({
-            ...props,
-            id: crypto.randomUUID().toString()
-        })
+        const props: UsuarioProps = {
+            id: crypto.randomUUID().toString(),
+            email,
+            senha,
+            autorizacao,
+        }
+        return new Usuario(props)
     }
 
     public get id(): string {
