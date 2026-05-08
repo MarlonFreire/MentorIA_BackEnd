@@ -1,50 +1,58 @@
+import { Aluno } from "./Aluno.js";
+
 export type TurmaProps ={
     id: string;
-    nomeTurma: string;
+    nome: string;
     serie: string;
     professorId: string;
-    alunosIDs: string[];
+    alunos: Aluno[]
 }
 
 export class Turma {
 
     private constructor(readonly props: TurmaProps){}
 
-    public static criar(props: TurmaProps): Turma{
+    public static criar(nome: string, serie: string, professorId: string): Turma{
 
-    if (!props.nomeTurma || props.nomeTurma.length < 3) {
+    if (!nome || nome.length < 3) {
       throw new Error('O nome da turma deve ter pelo menos 3 caracteres.');
     }
 
-    if (!props.professorId) {
+    if (!professorId) {
         throw new Error('Toda turma precisa de um professor responsável.')
     }
 
-        return new Turma({
-            ...props,
-            id: crypto.randomUUID().toString()
-        })
+        const props: TurmaProps = {
+            id: crypto.randomUUID().toString(),
+            nome,
+            serie,
+            professorId,
+            alunos: []
+   
+        }
+        return new Turma(props)
     }
 
     // adicionar aluno
-    public adicionar_aluno(idAluno: string): void {
-        
-        if (this.props.alunosIDs.includes(idAluno)) {
+    public adicionar_aluno(aluno:Aluno): void {
+
+        if (this.props.alunos.includes(aluno)) {
             throw new Error('Este aluno já faz parte desta turma.')
         }
-        this.props.alunosIDs.push(idAluno)
+        
+        this.props.alunos.push(aluno)
 
     }
 
 
 public get id(): string {return this.props.id;}
 
-public get nome_turma(): string {return this.props.nomeTurma;}
+public get nome(): string {return this.props.nome;}
 
 public get serie(): string {return this.props.serie;}
 
 public get professorId() { return this.props.professorId; }
 
-public get alunos_ids() { return [...this.props.alunosIDs]; }
+public get alunos_ids() { return [...this.props.alunos]; }
 
 }

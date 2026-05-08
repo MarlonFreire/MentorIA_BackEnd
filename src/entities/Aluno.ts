@@ -1,7 +1,10 @@
+import { Turma } from "./Turma.js";
+
 export type AlunoProps = {
     id: string;
     nome: string;
     matricula?: string | undefined;
+    turmas: Turma[]
 }
 
 export class Aluno {
@@ -17,12 +20,14 @@ public static criar(nome: string, matricula?:string ): Aluno{
     const props: AlunoProps = {
         id:crypto.randomUUID().toString(),
         nome,
-        matricula
+        matricula,
+        turmas: []
     }
 
     return new Aluno(props)
 }
 
+// add aluno em turma
 
 
 public get id(): string {return this.props.id;}
