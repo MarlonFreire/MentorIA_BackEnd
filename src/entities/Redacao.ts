@@ -1,9 +1,9 @@
-export type RedacaoProps = {
+export type RedacaoProps = { // REVISAR ENTIDADE
     id: string;
     tema: string;
     texto: string;
-    alunoId: string
-    turmaId: string
+    alunoId: string // ADD objeto professor
+    turmaId: string // ADD objeto turma
     dataEnvio: Date;
     status: string;
 }
@@ -30,7 +30,12 @@ export class Redacao {
 
         if (!texto || texto.trim().length < 50) {
             throw new Error("O texto da redação é muito curto para ser processado e avaliado.");
-        }        
+        }
+        
+        const dataAtual = new Date();
+        if (dataEnvio > dataAtual) {
+            throw new Error("A data de envio não pode ser uma data no futuro.");
+        }
 
         const props: RedacaoProps = {
             id: crypto.randomUUID().toString(),
